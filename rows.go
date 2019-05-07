@@ -6,8 +6,10 @@ import (
   _ "github.com/go-sql-driver/mysql"
 )
 
-func (c *creds) get_rows(query string) {
+func (c *creds) get_rows(table string, fields string, options string) {
   db := c.connect()
+
+  query := fmt.Sprintf("SELECT %s FROM `%s` %s", fields, table, options)
 
   rows, err := db.Query(query)
 
