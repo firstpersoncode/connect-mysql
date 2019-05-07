@@ -42,8 +42,9 @@ func (c *creds) AddRows(table string, fields string, values string) {
   c.add_rows(table, fields, values)
 }
 
-func (c *creds) GetRows(table string, fields string, options string) {
-  c.get_rows(table, fields, options)
+func (c *creds) GetRows(table string, fields string, options string) []map[string]interface{} {
+  rows := c.get_rows(table, fields, options)
+  return rows
 }
 
 func Connect(db_driver string, user string, pass string, db_name string) creds {
