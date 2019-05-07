@@ -2,11 +2,12 @@ package connmysql
 
 import (
   "fmt"
+  "encoding/json"
   "database/sql"
   _ "github.com/go-sql-driver/mysql"
 )
 
-func (c *creds) get_rows(table string, fields string, options string) []map[string]interface{} {
+func (c *creds) get_rows(table string, fields string, options string) string {
   db := c.connect()
 
   query := fmt.Sprintf("SELECT %s FROM `%s` %s", fields, table, options)
@@ -61,7 +62,15 @@ func (c *creds) get_rows(table string, fields string, options string) []map[stri
 
   defer rows.Close()
 
-  return resp
+  jbyte, err := json.Marshal(resp)
+
+  if err != nil {
+    fmt.Println(err.Error())
+  }
+
+  jsonStr := string(jbyte)
+
+  return jsonStr
 }
 
 func (c *creds) add_rows(table string, fields string, values string) {

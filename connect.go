@@ -42,7 +42,7 @@ func (c *creds) AddRows(table string, fields string, values string) {
   c.add_rows(table, fields, values)
 }
 
-func (c *creds) GetRows(table string, fields string, options string) []map[string]interface{} {
+func (c *creds) GetRows(table string, fields string, options string) string {
   rows := c.get_rows(table, fields, options)
   return rows
 }
