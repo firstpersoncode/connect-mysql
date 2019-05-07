@@ -15,6 +15,8 @@ type creds struct {
   db_name string
 }
 
+// type resp []map[string]interface{}
+
 func (c *creds) connect() (db *sql.DB) {
   db, err := sql.Open(c.db_driver, c.user+":"+c.pass+"@/"+c.db_name)
 
@@ -42,7 +44,7 @@ func (c *creds) AddRows(table string, fields string, values string) {
   c.add_rows(table, fields, values)
 }
 
-func (c *creds) GetRows(table string, fields string, options string) string {
+func (c *creds) GetRows(table string, fields string, options string) []map[string]interface{} {
   rows := c.get_rows(table, fields, options)
   return rows
 }

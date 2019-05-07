@@ -2,12 +2,14 @@ package connmysql
 
 import (
   "fmt"
-  "encoding/json"
+  // "encoding/json"
   "database/sql"
   _ "github.com/go-sql-driver/mysql"
 )
 
-func (c *creds) get_rows(table string, fields string, options string) string {
+// type resp []map[string]interface{}
+
+func (c *creds) get_rows(table string, fields string, options string) []map[string]interface{} {
   db := c.connect()
 
   query := fmt.Sprintf("SELECT %s FROM `%s` %s", fields, table, options)
@@ -30,7 +32,7 @@ func (c *creds) get_rows(table string, fields string, options string) string {
 		scanArgs[i] = &values[i]
 	}
 
-  var resp []map[string]interface{}
+  var arr []map[string]interface{}
 
 	for rows.Next() {
     dataStr := make(map[string]interface{})
@@ -53,7 +55,7 @@ func (c *creds) get_rows(table string, fields string, options string) string {
 			// fmt.Println(columns[i] + ":", value)
 		}
 		// fmt.Println("-----------------------------------")
-    resp = append(resp, dataStr)
+    arr = append(arr, dataStr)
 	}
 
 	if err = rows.Err(); err != nil {
@@ -62,15 +64,15 @@ func (c *creds) get_rows(table string, fields string, options string) string {
 
   defer rows.Close()
 
-  jbyte, err := json.Marshal(resp)
+  // jbyte, err := json.Marshal(resp)
+  //
+  // if err != nil {
+  //   fmt.Println(err.Error())
+  // }
+  //
+  // jsonStr := string(jbyte)
 
-  if err != nil {
-    fmt.Println(err.Error())
-  }
-
-  jsonStr := string(jbyte)
-
-  return jsonStr
+  return arr
 }
 
 func (c *creds) add_rows(table string, fields string, values string) {
@@ -78,7 +80,7 @@ func (c *creds) add_rows(table string, fields string, values string) {
 
   query := fmt.Sprintf("INSERT INTO `%s` (%s) VALUES (%s)", table, fields, values)
 
-  fmt.Println(query)
+  // fmt.Println(query)
 
   rows, err := db.Query(query)
   if err != nil {
